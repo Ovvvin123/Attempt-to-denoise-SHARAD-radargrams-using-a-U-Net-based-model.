@@ -1,0 +1,51 @@
+# Python cache
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# temporary / generated folders
+.codex_single_rgram_out/
+.codex_single_rgram_test/
+
+# large data folders
+browse_tiff_selected/
+data/
+download_ralated/
+geom_data_total/
+outputs/
+radar_ai_dataset/
+rgram/
+
+# radar / image / data files
+*.IMG
+*.img
+*.LBL
+*.lbl
+*.TAB
+*.tab
+*.tif
+*.tiff
+*.TIF
+*.TIFF
+*.npy
+*.npz
+*.mat
+*.h5
+*.hdf5
+
+# model weights and outputs
+*.pth
+*.pt
+*.ckpt
+*.onnx
+runs/
+logs/
+checkpoints/
+results/
+
+# local config
+config.yaml
+local_config.py
