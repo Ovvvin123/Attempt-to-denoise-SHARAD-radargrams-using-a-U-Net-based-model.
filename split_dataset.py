@@ -104,7 +104,6 @@ def infer_track_id_from_name(filename: str) -> str:
 def clean_track_id(value: str | None, filename: str) -> str:
     """
     优先使用 stats_csv 里的 track_id。
-    如果为空或者异常，则从文件名推断。
     """
     if value is None:
         return infer_track_id_from_name(filename)
@@ -226,9 +225,6 @@ def split_groups(
     """
     按 track_id 分组划分 train / val / test。
 
-    注意：
-    - 划分单位是 track_id，不是单个 patch。
-    - 如果一个 track_id 有多个 npz，它们会被放到同一个集合。
     """
     ratio_sum = train_ratio + val_ratio + test_ratio
 
@@ -270,8 +266,6 @@ def split_groups(
         else:
             split["test"].extend(records)
 
-    # 防止极端情况下某个集合为空
-    # 对于 3000 个样本一般不会触发
     if len(split["val"]) == 0 and len(split["train"]) > 1:
         split["val"].append(split["train"].pop())
 

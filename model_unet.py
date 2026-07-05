@@ -1,25 +1,11 @@
 # model_unet.py
-# 用途：
-#   定义用于 SHARAD 雷达反射层降噪的 Residual U-Net。
-#
-# 设计：
 #   输入 noisy patch:
 #       x.shape = [B, 1, H, W]
 #
 #   网络输出 predicted_noise:
 #       predicted_noise.shape = [B, 1, H, W]
 #
-#   训练时在 train_unet.py 中使用：
-#       predicted_noise = model(noisy)
-#       denoised = noisy - predicted_noise
-#       loss = masked_smooth_l1(denoised, reflection, mask)
-#
-# 推荐输入尺寸：
-#   [B, 1, 176, 256]
-#   [B, 1, 176, 512]
-#
-# 单独测试：
-#   F:\FInstallation\anaconda\python.exe model_unet.py
+
 
 from __future__ import annotations
 
@@ -51,11 +37,6 @@ def make_norm(norm: str, num_channels: int) -> nn.Module:
     """
     创建归一化层。
 
-    norm 可选：
-        "group"    : GroupNorm，推荐
-        "batch"    : BatchNorm2d
-        "instance" : InstanceNorm2d
-        "none"     : 不使用归一化
     """
     norm = norm.lower()
 
@@ -77,7 +58,7 @@ def make_norm(norm: str, num_channels: int) -> nn.Module:
 
 class ConvBlock(nn.Module):
     """
-    U-Net 中的基础卷积模块：
+    基础卷积模块：
 
         Conv2d -> Norm -> ReLU
         Conv2d -> Norm -> ReLU
@@ -218,8 +199,6 @@ class UpBlock(nn.Module):
         """
         让 x 的 H, W 和 target 一致。
 
-        正常情况下，如果输入尺寸能被 2^depth 整除，不需要调整。
-        但为了增强鲁棒性，这里保留尺寸匹配逻辑。
         """
         target_h, target_w = target.shape[-2:]
         x_h, x_w = x.shape[-2:]
@@ -260,41 +239,6 @@ class UpBlock(nn.Module):
 
 
 class ResidualUNet(nn.Module):
-    """
-    Residual U-Net for radargram denoising.
-
-    注意：
-        这个模型输出的是 predicted_noise，不是 denoised 图像。
-
-    训练时应使用：
-
-        predicted_noise = model(noisy)
-        denoised = noisy - predicted_noise
-
-    参数：
-        in_channels:
-            输入通道数，第一版设为 1。
-
-        out_channels:
-            输出通道数，第一版设为 1。
-
-        base_channels:
-            第一层通道数，推荐 32。
-
-        depth:
-            下采样次数，推荐 3。
-            depth=3 时，尺度变化：
-                176 x 256
-                88  x 128
-                44  x 64
-                22  x 32
-
-        norm:
-            推荐 "group"。
-
-        up_mode:
-            推荐 "bilinear"。
-    """
 
     def __init__(
         self,
@@ -394,7 +338,6 @@ class ResidualUNet(nn.Module):
             x = down(x)
             skips.append(x)
 
-        # 最后一层是 bottleneck，不作为 skip 使用
         x = skips[-1]
         skips = skips[:-1]
 

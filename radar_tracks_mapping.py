@@ -14,33 +14,6 @@ def get_geom_latlon(track_name, geom_root, lat_col=2, lon_col=3):
     """
     根据轨迹名称找到对应的 GEOM.TAB 文件，并读取经纬度。
 
-    适用于这种结构：
-        geom_data_total/
-            s_0016xx/
-                s_00168901_geom.tab
-                s_00168901_geom.lbl
-                s_00168901_geom.xml
-
-    参数：
-        track_name:
-            可以是：
-            's_00168901_tiff.tif'
-            's_00168901_rgram.img'
-            's_00168901_geom.tab'
-            '00168901'
-
-        geom_root:
-            GEOM 总文件夹，例如：
-            r"E:\\python\\pytorchProject1\\geom_data_total"
-
-        lat_col:
-            纬度所在列，默认 2，表示第 3 列。
-
-        lon_col:
-            经度所在列，默认 3，表示第 4 列。
-
-    返回：
-        geom_path, lat, lon
     """
     geom_root = Path(geom_root)
 

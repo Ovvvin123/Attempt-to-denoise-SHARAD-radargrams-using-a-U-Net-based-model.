@@ -110,10 +110,7 @@ def shape_to_str(shape) -> str:
 
 
 def infer_track_id(npz_path: Path, npz_obj=None) -> str:
-    """
-    优先读取 npz 内部的 track_id。
-    如果没有，则从文件名中提取 S_XXXXXXXX 形式的编号。
-    """
+
     if npz_obj is not None and "track_id" in npz_obj.files:
         try:
             return str(to_python_scalar(npz_obj["track_id"]))
@@ -148,10 +145,7 @@ def sample_values(values: np.ndarray, max_count: int, rng: np.random.Generator) 
 
 
 def safe_numeric_mask(arr: np.ndarray) -> np.ndarray:
-    """
-    返回 finite mask。
-    若数组不是数值类型，则返回全 False。
-    """
+
     try:
         return np.isfinite(arr)
     except TypeError:
@@ -162,10 +156,7 @@ def valid_values(
     arr: np.ndarray,
     mask: np.ndarray | None = None,
 ) -> np.ndarray:
-    """
-    提取有限数值。
-    如果传入 mask，并且 mask.shape == arr.shape，则只取 mask > 0 的有效区域。
-    """
+
     arr = np.asarray(arr)
     finite = safe_numeric_mask(arr)
 
@@ -184,10 +175,7 @@ def compute_array_stats(
     percentile_sample: int = 50000,
     mask: np.ndarray | None = None,
 ) -> dict[str, Any]:
-    """
-    计算某个数组的基本统计。
-    prefix 用于区分 reflection/noise/noisy_reflection 等。
-    """
+
     row = {}
 
     arr = np.asarray(arr)
@@ -344,10 +332,6 @@ def write_csv(rows: list[dict[str, Any]], csv_path: Path):
 
 
 def try_make_plots(out_dir: Path, rows: list[dict[str, Any]], global_samples: dict[str, np.ndarray]):
-    """
-    尝试生成几张基础统计图。
-    如果没有 matplotlib，则自动跳过。
-    """
     try:
         import matplotlib.pyplot as plt
     except Exception:
@@ -431,7 +415,6 @@ def main():
 
     rng = np.random.default_rng(args.seed)
 
-    # 每个文件为全局统计抽样多少像素
     global_sample_per_file = max(10, args.global_sample_limit // max(len(npz_files), 1))
 
     rows: list[dict[str, Any]] = []
@@ -664,11 +647,7 @@ def main():
         "noise_centered_raw": compute_global_stats(global_samples["noise_centered_raw"]),
     }
 
-    # 推荐 log1p 归一化参数
-    # 第一版训练时可以用：
-    #   x_log = log1p(x)
-    #   x_norm = (x_log - p1) / (p99 - p1)
-    #   x_norm = clip(x_norm, 0, 1)
+=
     ref = global_samples["reflection_valid_raw"]
     noisy = global_samples["noisy_reflection_valid_raw"]
 
