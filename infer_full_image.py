@@ -1,22 +1,13 @@
 # infer_full_image.py
-# 用途：
 #   使用训练好的 Residual U-Net 对完整 reflection 矩阵进行滑窗降噪推理。
 #
-# 默认输入：
+# 输入：
 #   radar_ai_dataset/*.npz 中的 reflection
 #
-# 默认输出：
+# 输出：
 #   outputs/inference/test/
 #
-# 推荐运行：
-#   cd F:\radar_deeplearning
-#   F:\FInstallation\anaconda\envs\pytorch\python.exe infer_full_image.py
 #
-# 指定模型：
-#   F:\FInstallation\anaconda\envs\pytorch\python.exe infer_full_image.py --checkpoint outputs/checkpoints/last_unet.pth
-#
-# 推理全部数据：
-#   F:\FInstallation\anaconda\envs\pytorch\python.exe infer_full_image.py --split all
 
 from __future__ import annotations
 

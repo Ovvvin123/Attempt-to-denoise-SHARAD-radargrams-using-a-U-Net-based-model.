@@ -1,16 +1,10 @@
 # train_unet.py
-# 用途：
-#   训练 Residual U-Net 做 SHARAD 反射层降噪。
 #
 # 训练任务：
 #   noisy = reflection + alpha * noise_scaling_factor * noise
 #   model(noisy) -> predicted_noise
 #   denoised = noisy - predicted_noise
 #   loss = masked SmoothL1(denoised, reflection)
-#
-# 推荐运行：
-#   cd F:\radar_deeplearning
-#   F:\FInstallation\anaconda\envs\pytorch\python.exe train_unet.py
 
 from __future__ import annotations
 
@@ -127,10 +121,7 @@ def compute_batch_metrics(
     mask: torch.Tensor,
     loss: torch.Tensor,
 ) -> Dict[str, float]:
-    """
-    计算一个 batch 的指标。
-    所有指标都在归一化空间中计算。
-    """
+
     eps = 1e-8
 
     valid = mask > 0
@@ -160,7 +151,6 @@ def compute_batch_metrics(
     noisy_high_clip_ratio = (noisy_valid >= 0.999).float().mean()
     target_high_clip_ratio = (target_valid >= 0.999).float().mean()
 
-    # denoised 没有在 loss 前强行 clip，所以这里记录越界比例
     denoised_low_ratio = (denoised_valid < 0.0).float().mean()
     denoised_high_ratio = (denoised_valid > 1.0).float().mean()
 

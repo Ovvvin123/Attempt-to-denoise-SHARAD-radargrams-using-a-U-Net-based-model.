@@ -1,9 +1,5 @@
 # split_dataset.py
-# 用途：
 #   将 radar_ai_dataset 中的 .npz 数据按 track_id 划分为 train / val / test。
-#
-# 推荐运行：
-#   F:\FInstallation\anaconda\python.exe split_dataset.py
 #
 # 输出：
 #   outputs/splits/split.json
@@ -82,10 +78,6 @@ def infer_track_id_from_name(filename: str) -> str:
     """
     从文件名中提取轨道编号。
 
-    例如：
-        S_00174302_dataset.npz -> S_00174302
-        s_00174302_tiff.npz    -> S_00174302
-        00174302_dataset.npz   -> S_00174302
     """
     stem = Path(filename).stem
 
@@ -97,7 +89,6 @@ def infer_track_id_from_name(filename: str) -> str:
     if m:
         return "S_" + m.group(1)
 
-    # 如果实在提取不到，就退回文件名本身
     return stem
 
 

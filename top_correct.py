@@ -1,7 +1,6 @@
 import numpy as np
 from PIL import Image
 
-# Python版本的 top_correct 函数
 def top_correct(dat, fline, top, ep, dtt):
     """
     dat: 2D numpy array, 雷达矩阵
@@ -33,7 +32,6 @@ def top_correct(dat, fline, top, ep, dtt):
     
     return tdat
 
-# Python版本的 Fig_ID_track_Holt2010 主程序
 def fig_id_track_holt2010(ID, par_path, rgram_path, browse_path):
     # 读取参数
     par = np.loadtxt(par_path)

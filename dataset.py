@@ -1,5 +1,4 @@
 # dataset.py
-# 用途：
 #   为 SHARAD 雷达反射层 U-Net 降噪训练提供 PyTorch Dataset / DataLoader。
 #
 # 当前策略：
@@ -13,13 +12,11 @@
 #   7. padding 区域、NaN/Inf 区域 mask = 0
 #   8. 使用 log1p + summary.json 中的 p1/p99 做归一化
 #
-# 推荐输入输出：
+# 输入输出：
 #   noisy:      [1, 176, 256]
 #   reflection: [1, 176, 256]
 #   mask:       [1, 176, 256]
 #
-# 单独测试：
-#   F:\FInstallation\anaconda\python.exe dataset.py --split train --noise_scaling_factor 5.0
 
 from __future__ import annotations
 
@@ -204,9 +201,7 @@ class RadarPatchDataset(Dataset):
         input noisy = reflection + alpha * noise
         target reflection
 
-    注意：
-        这里不使用 npz 里保存的 mask。
-        因为你当前的 mask.shape 可能不是 reflection.shape。
+
     """
 
     def __init__(
@@ -413,8 +408,6 @@ class RadarPatchDataset(Dataset):
         返回裁剪区域：
             y0, x0, crop_h, crop_w
 
-        注意：
-            宽度小于 patch_w 的文件已经在初始化时跳过。
 
         高度：
             如果 h < patch_h，则使用全部高度，后面 padding。

@@ -20,12 +20,7 @@ def get_group_count(num_channels: int, max_groups: int = 8) -> int:
     要求：
         num_channels % num_groups == 0
 
-    例如：
-        channels=32 -> groups=8
-        channels=64 -> groups=8
-        channels=16 -> groups=8
-        channels=8  -> groups=8
-        channels=4  -> groups=4
+
     """
     for g in range(min(max_groups, num_channels), 0, -1):
         if num_channels % g == 0:
